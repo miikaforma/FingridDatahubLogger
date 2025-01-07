@@ -1,6 +1,6 @@
 # WIP Fingrid Datahub API Client (C#)
 
-POC for retrieving electricity consumptions/productions from [Fingrid Datahub](https://oma.datahub.fi) programmatically (and storing them in own database). The main issue with this is that the Datahub uses strong authentication vai Suomi.fi and doesn't provide API keys.
+POC for retrieving electricity consumptions/productions from [Fingrid Datahub](https://oma.datahub.fi) programmatically (and storing them in own database). The main issue with this is that the Datahub uses strong authentication via Suomi.fi and doesn't provide API keys.
 
 To circumvent this issue, we first do a manual login and store the cookies from it to a cookies.txt file. After that, we inject that into the main logger application which will then use those cookies and keep updating the token so it doesn't expire.
 
