@@ -170,7 +170,10 @@ public class DatahubClient : IDatahubClient
         var cookies = _cookieJar.ToList();
         
         // Remove expiry from cap-user cookie (the cookie is valid for only 15 minutes while the token is valid for 6 hours)
-        var capUserCookie = cookies.FirstOrDefault(c => c.Name == "cap-user");
+        var capUserCookie = cookies
+            .Where(c => c.Name == "cap-user")
+            .OrderByDescending(c => c.DateReceived)
+            .FirstOrDefault();
         if (capUserCookie != null)
         {
             var newCapUserCookie = new FlurlCookie(capUserCookie.Name, capUserCookie.Value, capUserCookie.OriginUrl, capUserCookie.DateReceived);
