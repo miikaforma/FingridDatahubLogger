@@ -1,0 +1,8 @@
+﻿services:
+  fingriddatahublogger:
+    image: fingriddatahublogger
+    build:
+      context: .
+      dockerfile: FingridDatahubLogger/Dockerfile
+    ports:
+      - "5000:80"

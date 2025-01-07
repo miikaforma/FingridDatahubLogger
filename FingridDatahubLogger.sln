@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FingridDatahubLogger", "FingridDatahubLogger\FingridDatahubLogger.csproj", "{C33902E0-613A-460F-8887-726BCE6A1DF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC16B71C-7F1C-4183-9FE2-080A2D47B43D}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitialLogin", "InitialLogin\InitialLogin.csproj", "{6815A22D-9975-4612-988E-47EADC25B676}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{9CA96482-5009-4ECE-8119-EC2D62441BA7}"
+	ProjectSection(SolutionItems) = preProject
+		01_InitialMigration.sql = 01_InitialMigration.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C33902E0-613A-460F-8887-726BCE6A1DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C33902E0-613A-460F-8887-726BCE6A1DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C33902E0-613A-460F-8887-726BCE6A1DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C33902E0-613A-460F-8887-726BCE6A1DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6815A22D-9975-4612-988E-47EADC25B676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6815A22D-9975-4612-988E-47EADC25B676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6815A22D-9975-4612-988E-47EADC25B676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6815A22D-9975-4612-988E-47EADC25B676}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
