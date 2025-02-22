@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{9CA96482-5009-4ECE-8119-EC2D62441BA7}"
 	ProjectSection(SolutionItems) = preProject
 		01_InitialMigration.sql = 01_InitialMigration.sql
+		02_MeteringPoints-Contracts.sql = 02_MeteringPoints-Contracts.sql
 	EndProjectSection
 EndProject
 Global

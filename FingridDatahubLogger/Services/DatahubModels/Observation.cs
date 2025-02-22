@@ -31,4 +31,11 @@ public record Observation
         parameterCollection.AddWithValue("quantity", Quantity);
         parameterCollection.AddWithValue("quality", NpgsqlTypes.NpgsqlDbType.Text, Quality.ToString());
     }
+    
+    public async Task AddMetrics(NpgsqlBinaryImporter writer, CancellationToken cancellationToken = default)
+    {
+        await writer.WriteAsync(DateTimeOffset.FromUnixTimeMilliseconds(Epoch), NpgsqlTypes.NpgsqlDbType.TimestampTz, cancellationToken);
+        await writer.WriteAsync(Quantity, NpgsqlTypes.NpgsqlDbType.Double, cancellationToken);
+        await writer.WriteAsync(Quality.ToString(), NpgsqlTypes.NpgsqlDbType.Varchar, cancellationToken);
+    }
 }

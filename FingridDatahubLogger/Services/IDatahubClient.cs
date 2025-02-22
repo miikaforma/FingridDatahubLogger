@@ -11,6 +11,8 @@ public interface IDatahubClient
     DateTime? GetTokenExpiry();
     
     Task RefreshTokenAsync();
+
+    Task<AgreementData[]> GetAgreementDataAsync(AgreementRequest request);
     
     Task<OrganisationData[]> GetOrganisationsAsync();
 

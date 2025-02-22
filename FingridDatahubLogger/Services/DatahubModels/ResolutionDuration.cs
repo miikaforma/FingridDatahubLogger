@@ -1,11 +1,16 @@
 ﻿using System.Text.Json.Serialization;
+using FingridDatahubLogger.Converters;
+
 // ReSharper disable InconsistentNaming
 
 namespace FingridDatahubLogger.Services.DatahubModels;
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
+[JsonConverter(typeof(ResolutionDurationConverter))]
 public enum ResolutionDuration
 {
+    [JsonPropertyName("")]
+    None,
+    
     [JsonPropertyName("PT15M")]
     PT15M,
 

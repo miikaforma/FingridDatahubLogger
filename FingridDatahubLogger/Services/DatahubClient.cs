@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
+using FingridDatahubLogger.CustomExceptions;
 using FingridDatahubLogger.Services.DatahubModels;
 using FingridDatahubLogger.Settings;
 using Flurl.Http;
@@ -12,14 +13,16 @@ public class DatahubClient : IDatahubClient
 
     private readonly ILogger<DatahubClient> _logger;
     private readonly DatahubSettings _datahubSettings;
+    private readonly AppSettings _appSettings;
     private readonly CookieJar _cookieJar;
 
     private const string CookieFilePath = "cookies.txt";
 
-    public DatahubClient(ILogger<DatahubClient> logger, IOptions<DatahubSettings> datahubSettings)
+    public DatahubClient(ILogger<DatahubClient> logger, IOptions<DatahubSettings> datahubSettings, IOptions<AppSettings> appSettings)
     {
         _logger = logger;
         _datahubSettings = datahubSettings.Value;
+        _appSettings = appSettings.Value;
         _cookieJar = LoadCookiesFromFile();
     }
 
@@ -80,6 +83,10 @@ public class DatahubClient : IDatahubClient
             if (response.StatusCode == 302)
             {
                 SaveCookiesToFile();
+                
+                var token = ExtractAuthToken(_cookieJar);
+                var jwt = new JwtSecurityToken(token);
+                _logger.LogInformation("Token refreshed. New expiry: {TokenExpiry}", jwt.ValidTo);
             }
             else
             {
@@ -92,6 +99,11 @@ public class DatahubClient : IDatahubClient
             _logger.LogError(ex, "Error returned from {RequestUrl}: {ErrorResponse}", ex.Call.Request.Url, err);
             throw;
         }
+    }
+    
+    public Task<AgreementData[]> GetAgreementDataAsync(AgreementRequest request)
+    {
+        return PostDataAsync<AgreementData[]>("_api/GetAgreementData", request);
     }
         
     public Task<OrganisationData[]> GetOrganisationsAsync()
@@ -106,7 +118,7 @@ public class DatahubClient : IDatahubClient
     
     private IFlurlRequest ConfigureRequest(string endpoint)
     {
-        if (IsTokenExpired())
+        if (!_appSettings.SkipTokenCheck && IsTokenExpired())
         {
             // If the token has expired, the application can't refresh the token and needs manual intervention
             throw new Exception("Token has expired. Please login again.");
@@ -153,13 +165,25 @@ public class DatahubClient : IDatahubClient
     private async Task<T> PostDataAsync<T>(string endpoint, object? data)
     {
         try {
-            return await ConfigureRequest(endpoint)
+            var response = await ConfigureRequest(endpoint)
                 .PostJsonAsync(data ?? new { })
-                .ReceiveJson<T>();
+                .ReceiveString();
+
+            if (response.Contains("\"ReasonCode\":\"RC-MDM-RMV-100\""))
+            {
+                throw new NoDataFoundException("No data found");
+            }
+
+#if DEBUG
+            // await File.WriteAllTextAsync("response.json", response);
+#endif
+
+            return JsonSerializer.Deserialize<T>(response) ?? throw new InvalidOperationException();
         }
         catch (FlurlHttpException ex) {
             var err = await ex.GetResponseStringAsync();
             _logger.LogError(ex, "Error returned from {RequestUrl}: {ErrorResponse}", ex.Call.Request.Url, err);
+            
             throw;
         }
     }

@@ -26,7 +26,7 @@ public class ConsumptionRequest
     public bool SettlementRelevant { get; set; } = false;
 
     [JsonPropertyName("ResolutionDuration")]
-    public ResolutionDuration ResolutionDuration { get; set; } = ResolutionDuration.PT1H;
+    public ResolutionDuration? ResolutionDuration { get; set; } = null;
 
     [JsonPropertyName("ReadingType")]
     public ReadingType ReadingType { get; set; } = ReadingType.BN01;
